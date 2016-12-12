@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Food Online</title>
+    </h:head>
+    <h:body>
+        <h:form id="myForm">
+            <b>Dear guest, Welcome to Food Online!</b><p></p>
+            <fieldset>
+                <b>Step 1: Enter your location:</b><p></p>
+                <h:inputText id="inputLocation" value="#{myOwnBean.inputLocation}"></h:inputText>
+                <h:commandButton value="Search" type="button">
+                    <f:ajax execute="inputLocation" render="foodByLocation"/> 
+                </h:commandButton><p></p>
+                <b>Available foods:</b>
+                <h:dataTable id="foodByLocation" value="#{myOwnBean.foodByLocation}" var="food" border="1">
+                    <h:column>
+                        <f:facet name="header"> Food ID </f:facet>
+                        #{food.id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"> Name </f:facet>
+                        #{food.name}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"> Price </f:facet>
+                        #{food.price}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"> Quantity </f:facet>
+                        #{food.qty}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"> Location </f:facet>
+                        #{food.location}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"> Restaurant </f:facet>
+                        #{food.restaurant}
+                    </h:column>
+                </h:dataTable>
+                <p></p>
+            </fieldset>
+            <fieldset>
+                <b>Step 2: Enter the food ID and quantity you want to order:</b>
+                <p></p>
+                Food ID: 
+                <h:inputText title="id" value="#{myOwnBean.addId}"/>
+                <p></p>
+                Quantity: 
+                <h:inputText title="quantity" value="#{myOwnBean.addQty}"/>
+                <p></p>
+                <h:commandButton value="Add to shopping cart" action="#{myOwnBean.addFood}"/>
+                <p></p>
+                <b>Shopping Cart:</b>
+            <p></p>
+            <h:dataTable id="list" value="#{myOwnBean.shoppingList}" var="item" border="1">
+                <h:column>
+                    <f:facet name="header"> Food ID </f:facet>
+                    #{item.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header"> Name </f:facet>
+                    #{item.name}
+                </h:column>
+                <h:column>
+                    <f:facet name="header"> Price </f:facet>
+                    #{item.price}
+                </h:column>
+                <h:column>
+                    <f:facet name="header"> Quantity </f:facet>
+                    <h:inputText id="quantity" value="#{item.qty}" valueChangeListener="#{myOwnBean.setEditQty}"/>
+                    <h:commandButton value="Save Edit" action="#{myOwnBean.editQty(item)}">
+                    </h:commandButton>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="remove" action="#{myOwnBean.removeItem(item)}" />
+                </h:column>
+            </h:dataTable>
+            <p></p>
+            <b>Total cost (AUD$): </b><h:outputText value="#{myOwnBean.totalCost}"/>
+            </fieldset>
+            <fieldset>
+                <b>Step 3: Enter delivery and payment information:</b><p></p>
+                Name: <h:inputText id="username" value="#{myOwnBean.username}"></h:inputText><p></p>
+                Address: <h:inputText id="address" value="#{myOwnBean.address}"></h:inputText><p></p>
+                Tel: <h:inputText id="tel" value="#{myOwnBean.tel}"></h:inputText><p></p>
+                Notes: <h:inputText id="notes" value="#{myOwnBean.notes}"></h:inputText><p></p>
+                Payment Card: <h:inputText id="card" value="#{myOwnBean.card}"></h:inputText><p></p>
+                <h:commandButton value="Comfirm payment and submit" type="button">
+                    <f:ajax execute="address username tel notes card" render="output"/> 
+                </h:commandButton><p></p>
+                <h:outputText value="#{myOwnBean.orderResponse}" id="output"/><p></p>
+            </fieldset>
+        </h:form>
+    </h:body>
+</html>
+
